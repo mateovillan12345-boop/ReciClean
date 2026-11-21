@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReciClean · Vista previa de paletas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Comfortaa:wght@700&family=Sacramento&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Cada paleta define los mismos roles; la maqueta de abajo solo usa estas variables. */
+  [data-paleta="a"] {
+    --fondo: #FFFFFF; --fondo-seccion: #EEF8FB; --linea: #D3E7EE;
+    --texto: #2B1A33; --texto-suave: #5A4C62;
+    --titulos: #6E257B; --detalle: #0797B6; --enlace: #056E86;
+    --boton: #6E257B; --boton-texto: #FFFFFF; --boton-hover: #561C61;
+    --cabecera: #FFFFFF; --cabecera-texto: #2B1A33; --cabecera-linea: #D3E7EE;
+    --banda: #6E257B; --pie: #6E257B;
+  }
+  [data-paleta="b"] {
+    --fondo: #FAF7F2; --fondo-seccion: #E9F6EE; --linea: #D2E6D9;
+    --texto: #23302A; --texto-suave: #4E5B54;
+    --titulos: #6E257B; --detalle: #0797B6; --enlace: #2E7D32;
+    --boton: #2E7D32; --boton-texto: #FFFFFF; --boton-hover: #23622A;
+    --cabecera: #FAF7F2; --cabecera-texto: #23302A; --cabecera-linea: #E6DFD3;
+    --banda: #6E257B; --pie: #6E257B;
+  }
+  [data-paleta="c"] {
+    --fondo: #FFFFFF; --fondo-seccion: #F4F3F6; --linea: #E1DEE6;
+    --texto: #1E1424; --texto-suave: #564B5E;
+    --titulos: #3D1347; --detalle: #0797B6; --enlace: #056E86;
+    --boton: #FFC845; --boton-texto: #3D1347; --boton-hover: #F2B92F;
+    --cabecera: #3D1347; --cabecera-texto: #FFFFFF; --cabecera-linea: #3D1347;
+    --banda: #6E257B; --pie: #3D1347;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: 'Nunito', sans-serif; font-size: 17px; line-height: 1.6; background: #ECEAEE; color: #2B1A33; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Barra de control (no es parte del diseño del sitio) */
+  .control { position: sticky; top: 0; z-index: 10; background: #1E1424; color: #fff; }
+  .control-in { max-width: 1180px; margin: 0 auto; padding: 14px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .control h1 { margin: 0; font: 600 18px 'Fredoka', sans-serif; }
+  .control p { margin: 0; font-size: 14px; color: #CFC6D6; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+  .tabs button { font: 700 15px 'Nunito', sans-serif; padding: 9px 16px; border-radius: 999px; border: 1.5px solid #6B5C78; background: transparent; color: #fff; cursor: pointer; }
+  .tabs button[aria-pressed="true"] { background: #fff; color: #1E1424; border-color: #fff; }
+
+  .ficha { max-width: 1180px; margin: 24px auto 0; padding: 0 20px; }
+  .ficha-in { background: #fff; border-radius: 12px; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; }
+  .ficha h2 { margin: 0; font: 600 22px 'Fredoka', sans-serif; }
+  .ficha .desc { margin: 4px 0 0; font-size: 15px; color: #5A4C62; max-width: 46ch; }
+  .muestras { display: flex; flex-wrap: wrap; gap: 10px; margin-left: auto; }
+  .muestra { width: 92px; font-size: 12px; line-height: 1.3; }
+  .muestra i { display: block; height: 44px; border-radius: 8px; border: 1px solid #DDD6E2; margin-bottom: 5px; }
+  .muestra b { display: block; }
+
+  /* Maqueta del sitio */
+  .sitio { max-width: 1180px; margin: 20px auto 48px; background: var(--fondo); color: var(--texto); border-radius: 12px; overflow: hidden; border: 1px solid #D9D3DE; }
+  .cont { padding: 0 40px; }
+  .sitio h2, .sitio h3 { font-family: 'Fredoka', sans-serif; font-weight: 600; color: var(--titulos); line-height: 1.15; margin: 0; }
+  .etq { font: 700 13px 'Comfortaa', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--enlace); margin: 0; }
+  .suave { color: var(--texto-suave); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 10px 22px; border-radius: 999px; font-weight: 700; font-size: 16px; border: 2px solid transparent; }
+  .btn-p { background: var(--boton); color: var(--boton-texto); }
+  .btn-p:hover { background: var(--boton-hover); }
+  .btn-b { border-color: var(--titulos); color: var(--titulos); background: var(--fondo); }
+  .btn svg { width: 19px; height: 19px; }
+
+  .cab { background: var(--cabecera); color: var(--cabecera-texto); border-bottom: 1px solid var(--cabecera-linea); }
+  .cab .cont { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 10px; padding-bottom: 10px; }
+  .logo { background: #fff; border-radius: 10px; padding: 4px 8px; }
+  .logo img { width: 112px; }
+  .nav { display: flex; gap: 22px; font-weight: 700; font-size: 16px; }
+  .nav .act { color: var(--titulos); }
+  [data-paleta="c"] .nav .act { color: #FFC845; }
+
+  .hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 44px; align-items: center; padding-top: 56px; padding-bottom: 56px; }
+  .hero .titulo { font: 600 42px/1.12 'Fredoka', sans-serif; color: var(--titulos); margin: 14px 0 0; }
+  .hero p.sub { margin: 16px 0 0; max-width: 46ch; }
+  .acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .hero img { border-radius: 16px; aspect-ratio: 4/3; object-fit: cover; width: 100%; }
+  .firma { font: 400 36px/1 'Sacramento', cursive; color: var(--enlace); text-align: right; margin: 10px 0 0; }
+
+  .confianza { background: var(--fondo-seccion); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
+  .confianza ul { list-style: none; margin: 0; padding: 16px 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 20px; font-weight: 700; color: var(--titulos); }
+  .confianza li { display: flex; align-items: center; gap: 9px; }
+  .ok { width: 19px; height: 19px; flex: none; stroke: var(--detalle); fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+  .sec { padding-top: 64px; padding-bottom: 64px; }
+  .sec h2 { font-size: 32px; margin-top: 10px; }
+  .tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 32px; }
+  .tarjeta { border: 1px solid var(--linea); border-radius: 12px; overflow: hidden; background: #fff; }
+  .tarjeta img { aspect-ratio: 3/2; object-fit: cover; width: 100%; }
+  .tarjeta div { padding: 20px 22px 22px; }
+  .num { font: 600 22px 'Fredoka', sans-serif; color: var(--detalle); margin: 0; }
+  .tarjeta h3 { font-size: 20px; margin-top: 2px; }
+  .tarjeta p.t { margin: 8px 0 14px; font-size: 15.5px; }
+  .ver { font-weight: 700; font-size: 15.5px; color: var(--enlace); }
+
+  .porque { background: var(--fondo-seccion); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
+  .porque .cont { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .porque .tit { grid-column: 1 / -1; }
+  .ben { display: flex; gap: 14px; }
+  .ico { width: 46px; height: 46px; flex: none; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .ico svg { width: 23px; height: 23px; stroke: var(--detalle); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .ben h3 { font-size: 19px; }
+  .ben p { margin: 4px 0 0; font-size: 15.5px; }
+
+  .banda { background: var(--banda); color: #fff; }
+  .banda .cont { padding-top: 44px; padding-bottom: 44px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 22px; }
+  .banda h2 { color: #fff; font-size: 30px; }
+  .banda p { margin: 8px 0 0; color: rgba(255,255,255,.9); }
+  [data-paleta="a"] .banda .btn-p { background: #fff; color: #6E257B; }
+
+  .pie { background: var(--pie); color: rgba(255,255,255,.9); border-top: 1px solid rgba(255,255,255,.2); }
+  .pie .cont { padding-top: 26px; padding-bottom: 26px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; }
+
+  .nota { max-width: 1180px; margin: 0 auto 48px; padding: 0 20px; font-size: 14px; color: #5A4C62; }
+
+  @media (max-width: 860px) {
+    .cont, .confianza ul { padding-left: 20px; padding-right: 20px; }
+    .nav { display: none; }
+    .hero, .tarjetas, .porque .cont { grid-template-columns: 1fr; }
+    .hero .titulo { font-size: 31px; }
+    .confianza ul { grid-template-columns: 1fr 1fr; }
+    .sec h2, .banda h2 { font-size: 25px; }
+    .muestras, .tabs { margin-left: 0; }
+  }
+</style>
+</head>
+<body data-paleta="b">
+
+<div class="control">
+  <div class="control-in">
+    <div>
+      <h1>ReciClean · Vista previa de paletas</h1>
+      <p>La misma página de inicio con cada paleta. El sitio real usa la Paleta A.</p>
+    </div>
+    <div class="tabs" role="group" aria-label="Elegir paleta">
+      <button type="button" data-ver="a" aria-pressed="false">A · Fresca y limpia (en uso)</button>
+      <button type="button" data-ver="b" aria-pressed="true">B · Eco natural</button>
+      <button type="button" data-ver="c" aria-pressed="false">C · Institucional</button>
+    </div>
+  </div>
+</div>
+
+<div class="ficha">
+  <div class="ficha-in">
+    <div>
+      <h2 id="ficha-titulo"></h2>
+      <p class="desc" id="ficha-desc"></p>
+    </div>
+    <div class="muestras" id="muestras"></div>
+  </div>
+</div>
+
+<div class="sitio">
+  <header class="cab">
+    <div class="cont">
+      <span class="logo"><img src="web/public/images/logo.png" alt="ReciClean, reciclaje y limpieza"></span>
+      <nav class="nav" aria-label="Menú de ejemplo">
+        <span class="act">Inicio</span><span>Servicios</span><span>Sostenibilidad</span><span>Nosotros</span><span>Trabaja con nosotros</span><span>Contacto</span>
+      </nav>
+      <a class="btn btn-p" href="#">Cotiza por WhatsApp</a>
+    </div>
+  </header>
+
+  <section class="cont hero">
+    <div>
+      <p class="etq">Limpieza institucional, empresarial y a domicilio</p>
+      <p class="titulo">Limpieza profesional para instituciones y empresas en La Paz y El Alto, con compromiso ambiental</p>
+      <p class="sub suave">Servicios de limpieza institucional, empresarial y a domicilio con personal asegurado, garantía de satisfacción y un enfoque real en el reciclaje.</p>
+      <div class="acciones">
+        <a class="btn btn-p" href="#">Cotiza por WhatsApp</a>
+        <a class="btn btn-b" href="#">Ver servicios</a>
+      </div>
+    </div>
+    <div>
+      <img src="web/public/images/equipo.webp" alt="Equipo de ReciClean con uniformes morados y turquesa">
+      <p class="firma">¡A tu servicio!</p>
+    </div>
+  </section>
+
+  <section class="confianza">
+    <ul>
+      <li><svg class="ok" viewBox="0 0 24 24"><path d="M5 12.500 10 17.500 19 7"/></svg>Desde 2020</li>
+      <li><svg class="ok" viewBox="0 0 24 24"><path d="M5 12.500 10 17.500 19 7"/></svg>Personal asegurado</li>
+      <li><svg class="ok" viewBox="0 0 24 24"><path d="M5 12.500 10 17.500 19 7"/></svg>Garantía de satisfacción</li>
+      <li><svg class="ok" viewBox="0 0 24 24"><path d="M5 12.500 10 17.500 19 7"/></svg>La Paz y El Alto</li>
+    </ul>
+  </section>
+
+  <section class="cont sec">
+    <p class="etq">Servicios</p>
+    <h2>Conoce nuestros servicios</h2>
+    <div class="tarjetas">
+      <article class="tarjeta">
+        <img src="web/public/images/oficinas.webp" alt="Oficina con estaciones de trabajo">
+        <div><p class="num">01</p><h3>Limpieza institucional y empresarial</h3><p class="t suave">Servicio integral para instituciones, oficinas y empresas, según tus requerimientos y presupuesto.</p><span class="ver">Ver servicio →</span></div>
+      </article>
+      <article class="tarjeta">
+        <img src="web/public/images/alfombra.webp" alt="Aspiradora sobre una alfombra">
+        <div><p class="num">03</p><h3>Limpieza a domicilio</h3><p class="t suave">Limpieza profunda de casas y departamentos: alfombras, sillones, cortinas, pisos y cocinas.</p><span class="ver">Ver servicio →</span></div>
+      </article>
+      <article class="tarjeta">
+        <img src="web/public/images/superficies.webp" alt="Manos con guantes limpiando una superficie">
+        <div><p class="num">04</p><h3>Limpieza flash</h3><p class="t suave">Limpieza de mantenimiento rápida y general. Tú eliges las áreas.</p><span class="ver">Ver servicio →</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="porque">
+    <div class="cont sec">
+      <div class="tit"><p class="etq">Nuestro respaldo</p><h2>¿Por qué elegir ReciClean?</h2></div>
+      <div class="ben"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 4.500 6v5.500c0 4.500 3.100 8.300 7.500 9.500 4.400-1.200 7.500-5 7.500-9.500V6L12 3Z"/><path d="m9 12 2.200 2.200L15.200 10"/></svg></span><div><h3>Tus bienes protegidos</h3><p class="suave">Seguro de responsabilidad civil: si algo se daña, se repone.</p></div></div>
+      <div class="ben"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.500"/><path d="M3.500 20c.400-3.500 3-5.500 6.500-5.500 1.300 0 2.500.300 3.500.800"/><path d="m15.500 17.500 2 2 3.500-4"/></svg></span><div><h3>Personal confiable y asegurado</h3><p class="suave">Equipo seleccionado, capacitado y con seguro contra accidentes.</p></div></div>
+      <div class="ben"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="m8.500 12.200 2.400 2.400 4.600-5"/></svg></span><div><h3>Garantía de satisfacción</h3><p class="suave">Si no quedas conforme, volvemos y lo arreglamos sin costo.</p></div></div>
+    </div>
+  </section>
+
+  <section class="banda">
+    <div class="cont">
+      <div><h2>¿Listo para cotizar tu servicio?</h2><p>Respondemos en menos de 24 horas.</p></div>
+      <a class="btn btn-p" href="#">Cotiza por WhatsApp</a>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <div class="cont"><span>ReciClean · Servicios de limpieza en La Paz y El Alto, Bolivia.</span><span>Desde 2020</span></div>
+  </footer>
+</div>
+
+<p class="nota">Archivo de vista previa: muestra un resumen de la página de inicio, no el sitio completo. Las fotos se leen desde <code>web/public/images</code>, así que este archivo debe quedarse en la carpeta Reciclean.</p>
+
+<script>
+  var paletas = {
+    a: { titulo: "Paleta A · Fresca y limpia", desc: "Mucho blanco, turquesa para la sensación de limpieza y morado como ancla de la marca. Es la que usa el sitio construido.",
+      colores: [["Morado","#6E257B","Títulos y botón"],["Turquesa","#0797B6","Íconos y detalles"],["Turquesa oscuro","#056E86","Enlaces"],["Agua","#EEF8FB","Secciones"],["Blanco","#FFFFFF","Fondo"],["Ciruela oscuro","#2B1A33","Texto"]] },
+    b: { titulo: "Paleta B · Eco natural", desc: "Suma un verde hoja en el botón de contacto y fondos crema y menta, más cálidos y humanos.",
+      colores: [["Morado","#6E257B","Títulos"],["Turquesa","#0797B6","Íconos y detalles"],["Verde hoja","#2E7D32","Botón de contacto"],["Menta","#E9F6EE","Secciones"],["Crema","#FAF7F2","Fondo"],["Verde noche","#23302A","Texto"]] },
+    c: { titulo: "Paleta C · Institucional", desc: "Morado profundo en encabezado y pie para transmitir seriedad. El amarillo se usa solo en el botón de contacto.",
+      colores: [["Morado profundo","#3D1347","Encabezado, pie, títulos"],["Morado","#6E257B","Secciones destacadas"],["Turquesa","#0797B6","Íconos y detalles"],["Amarillo acento","#FFC845","Botón de contacto"],["Gris perla","#F4F3F6","Secciones"],["Casi negro","#1E1424","Texto"]] }
+  };
+  function ver(id) {
+    var p = paletas[id];
+    document.body.setAttribute("data-paleta", id);
+    document.getElementById("ficha-titulo").textContent = p.titulo;
+    document.getElementById("ficha-desc").textContent = p.desc;
+    document.getElementById("muestras").innerHTML = p.colores.map(function (c) {
+      return '<div class="muestra"><i style="background:' + c[1] + '"></i><b>' + c[0] + '</b>' + c[1] + '<br>' + c[2] + '</div>';
+    }).join("");
+    document.querySelectorAll(".tabs button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-ver") === id ? "true" : "false");
+    });
+  }
+  document.querySelectorAll(".tabs button").forEach(function (b) {
+    b.addEventListener("click", function () { ver(b.getAttribute("data-ver")); });
+  });
+  var inicial = location.hash.replace("#", "");
+  ver(paletas[inicial] ? inicial : "b");
+</script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReciClean · Prueba de diseño minimalista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Paleta A */
+  :root {
+    --morado: #6e257b;
+    --morado-oscuro: #561c61;
+    --turquesa: #0797b6;
+    --turquesa-oscuro: #056e86;
+    --agua: #eef8fb;
+    --texto: #2b2330;
+    --texto-suave: #5d5563;
+    --linea: #e3e6ea;
+    --radio: 6px;        /* fotos, campos, botones */
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Plus Jakarta Sans", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.7;
+    letter-spacing: .01em;
+    word-spacing: .08em;
+    color: var(--texto);
+    background: #fff;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  h1, h2, h3 { font-weight: 400; line-height: 1.25; color: var(--texto); text-wrap: balance; }
+  h1 { font-size: clamp(2.1rem, 4.2vw, 3.25rem); font-weight: 300; }
+  h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+  h3 { font-size: 1.125rem; font-weight: 600; }
+  h2 strong { font-weight: 600; }
+  p { text-wrap: pretty; }
+
+  .contenedor { max-width: 1120px; margin-inline: auto; padding-inline: 24px; }
+  .seccion { padding-block: 104px; }
+  .suave { color: var(--texto-suave); }
+  .fondo-agua { background: var(--agua); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 0 26px;
+    border: 1.5px solid transparent; border-radius: var(--radio);
+    font: inherit; font-weight: 500; font-size: 1rem; cursor: pointer;
+    transition: background-color .15s, color .15s, border-color .15s;
+  }
+  .btn-principal { background: var(--morado); color: #fff; }
+  .btn-principal:hover { background: var(--morado-oscuro); }
+  .btn-borde { border-color: var(--morado); color: var(--morado); }
+  .btn-borde:hover { background: var(--morado); color: #fff; }
+  .btn-blanco { background: #fff; color: var(--morado); }
+  .btn-blanco:hover { background: var(--agua); }
+  .btn-borde-blanco { border-color: rgba(255,255,255,.8); color: #fff; }
+  .btn-borde-blanco:hover { background: #fff; color: var(--morado); }
+  .enlace { color: var(--turquesa-oscuro); font-weight: 500; }
+  .enlace:hover { text-decoration: underline; text-underline-offset: 4px; }
+  :focus-visible { outline: 3px solid var(--turquesa); outline-offset: 2px; }
+
+  /* Encabezado */
+  .encabezado { position: sticky; top: 0; z-index: 20; background: #fff; border-bottom: 1px solid var(--linea); }
+  .encabezado .contenedor { display: flex; align-items: center; gap: 40px; height: 76px; }
+  .encabezado img { height: 46px; width: auto; }
+  .encabezado nav { display: flex; gap: 30px; font-size: .97rem; }
+  .encabezado nav a:hover, .encabezado nav a[aria-current] { color: var(--morado); }
+  .encabezado .derecha { margin-left: auto; display: flex; align-items: center; gap: 24px; font-size: .97rem; }
+  .encabezado .btn { min-height: 42px; padding: 0 20px; font-size: .97rem; }
+
+  /* Carrusel */
+  .carrusel { position: relative; height: 560px; background: #2a1630; overflow: hidden; }
+  .diapositiva { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .7s, visibility .7s; }
+  .diapositiva.activa { opacity: 1; visibility: visible; }
+  .diapositiva > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .diapositiva::after { content: ""; position: absolute; inset: 0; background: rgba(52, 19, 60, .66); }
+  .diapositiva .contenedor { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; color: #fff; }
+  .diapositiva h1, .diapositiva .titulo { color: #fff; max-width: 17em; font-size: clamp(2.1rem, 4.2vw, 3.25rem); font-weight: 300; line-height: 1.2; }
+  .diapositiva p { margin-top: 20px; max-width: 34em; font-size: 1.15rem; color: rgba(255,255,255,.92); }
+  .diapositiva .botones { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .puntos { position: absolute; z-index: 2; left: 0; right: 0; bottom: 28px; }
+  .puntos .contenedor { display: flex; gap: 10px; }
+  .puntos button { width: 34px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
+  .puntos button::before { content: ""; display: block; height: 3px; border-radius: 2px; background: rgba(255,255,255,.4); }
+  .puntos button[aria-selected="true"]::before { background: #fff; }
+
+  /* Servicios */
+  .intro { max-width: 640px; }
+  .intro p { margin-top: 14px; color: var(--texto-suave); }
+  .servicios { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .servicio .numero { font-size: 2.1rem; font-weight: 300; line-height: 1; color: #b9b3bd; }
+  .servicio img { margin-top: 16px; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radio); }
+  .servicio h3 { margin-top: 18px; color: var(--morado); }
+  .servicio a:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
+  .servicio p { margin-top: 6px; font-size: .95rem; line-height: 1.6; color: var(--texto-suave); }
+
+  /* Dos columnas */
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .dos img { width: 100%; object-fit: cover; border-radius: var(--radio); }
+  .razones { margin-top: 40px; display: grid; gap: 28px; list-style: none; padding: 0; }
+  .razones p { margin-top: 4px; font-size: .97rem; color: var(--texto-suave); }
+
+  /* Pasos */
+  .centrado { text-align: center; }
+  .pasos { margin-top: 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; list-style: none; padding: 0; text-align: center; }
+  .pasos .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--agua); color: var(--turquesa-oscuro); font-size: 1.25rem; font-weight: 500;
+  }
+  .pasos h3 { margin-top: 18px; }
+  .pasos p { margin-top: 6px; font-size: .95rem; line-height: 1.6; color: var(--texto-suave); }
+
+  /* Cita */
+  .cita { font-size: 1.3rem; font-weight: 300; line-height: 1.65; }
+  .firma { margin-top: 20px; font-size: .97rem; color: var(--texto-suave); }
+  .firma strong { font-weight: 600; color: var(--texto); }
+
+  /* Banda con foto */
+  .banda { position: relative; padding-block: 130px; text-align: center; color: #fff; background: #2a1630; }
+  .banda img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .banda::after { content: ""; position: absolute; inset: 0; background: rgba(110, 37, 123, .72); }
+  .banda div { position: relative; z-index: 1; }
+  .banda .grande { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 600; line-height: 1; }
+  .banda p { margin-top: 14px; font-size: 1.4rem; font-weight: 300; }
+
+  /* Formulario */
+  .formulario { margin: 48px auto 0; max-width: 620px; display: grid; gap: 18px; }
+  .fila { display: grid; grid-template-columns: 170px 1fr; align-items: center; gap: 16px; }
+  .fila.arriba { align-items: start; }
+  .fila.arriba label { padding-top: 12px; }
+  .fila label { font-size: .97rem; }
+  .campo {
+    width: 100%; min-height: 48px; padding: 10px 14px;
+    border: 1px solid #cfd6dc; border-radius: var(--radio);
+    background: #fff; color: var(--texto); font: inherit; font-size: 1rem;
+  }
+  .campo:focus { outline: none; border-color: var(--turquesa); box-shadow: 0 0 0 3px rgba(7,151,182,.18); }
+  textarea.campo { min-height: 120px; resize: vertical; }
+  .enviar { display: flex; justify-content: flex-end; }
+
+  /* Pie */
+  .pie { background: var(--morado); color: rgba(255,255,255,.88); font-size: .95rem; }
+  .pie .contenedor { padding-block: 64px 28px; }
+  .pie .columnas { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 56px; }
+  .pie h3 { color: #fff; font-size: 1rem; margin-bottom: 12px; }
+  .pie ul { list-style: none; padding: 0; display: grid; gap: 6px; }
+  .pie a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+  .pie .legal { margin-top: 48px; font-size: .85rem; color: rgba(255,255,255,.7); }
+
+  /* WhatsApp */
+  .whatsapp {
+    position: fixed; right: 22px; bottom: 22px; z-index: 30;
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: #1f8a4c; color: #fff; box-shadow: 0 4px 14px rgba(43,26,51,.25);
+  }
+  .whatsapp svg { width: 28px; height: 28px; }
+
+  @media (max-width: 900px) {
+    body { font-size: 16px; }
+    .seccion { padding-block: 68px; }
+    .encabezado nav, .encabezado .tel { display: none; }
+    .carrusel { height: 520px; }
+    .servicios, .pasos { grid-template-columns: 1fr 1fr; gap: 36px 20px; }
+    .dos { grid-template-columns: 1fr; gap: 40px; }
+    .fila { grid-template-columns: 1fr; gap: 6px; }
+    .fila.arriba label { padding-top: 0; }
+    .pie .columnas { grid-template-columns: 1fr; gap: 32px; }
+    .banda { padding-block: 90px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="encabezado">
+  <div class="contenedor">
+    <a href="#"><img src="web/public/images/logo.png" alt="ReciClean"></a>
+    <nav aria-label="Principal">
+      <a href="#" aria-current="page">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#sostenibilidad">Sostenibilidad</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="derecha">
+      <span class="tel">+591 76227202</span>
+      <a class="btn btn-principal" href="#contacto">Cotizar</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Carrusel -->
+  <section class="carrusel" aria-roledescription="carrusel" aria-label="Destacados de ReciClean">
+    <div class="diapositiva activa">
+      <img src="web/public/images/equipo.webp" alt="Equipo de ReciClean con uniformes morados y turquesa">
+      <div class="contenedor">
+        <h1>Limpieza profesional para instituciones y empresas</h1>
+        <p>En La Paz y El Alto, con personal asegurado y compromiso ambiental.</p>
+        <div class="botones">
+          <a class="btn btn-blanco" href="#contacto">Cotiza por WhatsApp</a>
+          <a class="btn btn-borde-blanco" href="#servicios">Ver servicios</a>
+        </div>
+      </div>
+    </div>
+    <div class="diapositiva">
+      <img src="web/public/images/oficinas.webp" alt="Oficina amplia con estaciones de trabajo ordenadas">
+      <div class="contenedor">
+        <p class="titulo">Limpieza institucional y empresarial</p>
+        <p>Un proveedor serio y flexible, con contrato anual y supervisión constante.</p>
+        <div class="botones">
+          <a class="btn btn-blanco" href="#contacto">Solicita una visita técnica</a>
+          <a class="btn btn-borde-blanco" href="#servicios">Ver detalle</a>
+        </div>
+      </div>
+    </div>
+    <div class="diapositiva">
+      <img src="web/public/images/piso.webp" alt="Persona de limpieza pasando una mopa sobre un piso reluciente">
+      <div class="contenedor">
+        <p class="titulo">Limpiamos tus espacios sin ensuciar el planeta</p>
+        <p>El reciclaje está en nuestro nombre y en nuestra forma de trabajar.</p>
+        <div class="botones">
+          <a class="btn btn-blanco" href="#contacto">Cotiza por WhatsApp</a>
+          <a class="btn btn-borde-blanco" href="#sostenibilidad">Conoce nuestro enfoque</a>
+        </div>
+      </div>
+    </div>
+    <div class="puntos">
+      <div class="contenedor" role="tablist" aria-label="Elegir diapositiva">
+        <button role="tab" aria-selected="true" aria-label="Diapositiva 1"></button>
+        <button role="tab" aria-selected="false" aria-label="Diapositiva 2"></button>
+        <button role="tab" aria-selected="false" aria-label="Diapositiva 3"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="seccion" id="servicios">
+    <div class="contenedor">
+      <div class="intro">
+        <h2>Conoce nuestros <strong>servicios</strong></h2>
+        <p>Cuatro servicios con el mismo respaldo: personal asegurado y garantía de satisfacción.</p>
+      </div>
+      <div class="servicios">
+        <article class="servicio">
+          <a href="#">
+            <p class="numero" aria-hidden="true">01</p>
+            <img src="web/public/images/oficinas.webp" alt="">
+            <h3>Limpieza institucional y empresarial</h3>
+          </a>
+          <p>Para instituciones públicas y privadas, oficinas y empresas.</p>
+        </article>
+        <article class="servicio">
+          <a href="#">
+            <p class="numero" aria-hidden="true">02</p>
+            <img src="web/public/images/post-obra.webp" alt="">
+            <h3>Limpieza post obra</h3>
+          </a>
+          <p>Dejamos el espacio listo para usar después de una construcción o remodelación.</p>
+        </article>
+        <article class="servicio">
+          <a href="#">
+            <p class="numero" aria-hidden="true">03</p>
+            <img src="web/public/images/hogar.webp" alt="">
+            <h3>Limpieza a domicilio</h3>
+          </a>
+          <p>Limpieza profunda de alfombras, sillones, cortinas, pisos, vidrios y cocinas.</p>
+        </article>
+        <article class="servicio">
+          <a href="#">
+            <p class="numero" aria-hidden="true">04</p>
+            <img src="web/public/images/superficies.webp" alt="">
+            <h3>Limpieza flash</h3>
+          </a>
+          <p>Limpieza rápida de mantenimiento para tener tu espacio siempre al día.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Por qué ReciClean -->
+  <section class="seccion fondo-agua">
+    <div class="contenedor dos">
+      <div>
+        <h2>¿Por qué elegir <strong>ReciClean</strong>?</h2>
+        <ul class="razones">
+          <li>
+            <h3>Personal confiable y asegurado</h3>
+            <p>Equipo seleccionado, capacitado y con seguro contra accidentes.</p>
+          </li>
+          <li>
+            <h3>Tus bienes protegidos</h3>
+            <p>Seguro de responsabilidad civil: si algo se daña, se repone.</p>
+          </li>
+          <li>
+            <h3>Garantía de satisfacción</h3>
+            <p>Si no quedas conforme, volvemos y lo arreglamos sin costo.</p>
+          </li>
+          <li>
+            <h3>Servicio a tu medida</h3>
+            <p>Planes flexibles según tus requerimientos, horarios y presupuesto.</p>
+          </li>
+        </ul>
+      </div>
+      <img src="web/public/images/piso.webp" alt="Persona de limpieza pasando una mopa sobre un piso reluciente" style="aspect-ratio: 4 / 5">
+    </div>
+  </section>
+
+  <!-- Pasos -->
+  <section class="seccion">
+    <div class="contenedor">
+      <h2 class="centrado">Contrata en <strong>cuatro pasos</strong></h2>
+      <ol class="pasos">
+        <li>
+          <span class="n">1</span>
+          <h3>Contáctanos</h3>
+          <p>Escríbenos por WhatsApp o por el formulario.</p>
+        </li>
+        <li>
+          <span class="n">2</span>
+          <h3>Evaluamos</h3>
+          <p>Visitamos el lugar o revisamos fotos y medidas.</p>
+        </li>
+        <li>
+          <span class="n">3</span>
+          <h3>Te cotizamos</h3>
+          <p>Según superficie, metros cuadrados y dificultad.</p>
+        </li>
+        <li>
+          <span class="n">4</span>
+          <h3>Limpiamos y verificamos</h3>
+          <p>Si algo no está bien, lo corregimos.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Sostenibilidad -->
+  <section class="seccion fondo-agua" id="sostenibilidad">
+    <div class="contenedor dos">
+      <img src="web/public/images/superficies.webp" alt="Manos con guantes limpiando una superficie con paño y atomizador" style="aspect-ratio: 3 / 2">
+      <div>
+        <h2>Limpiamos tus espacios <strong>sin ensuciar el planeta</strong></h2>
+        <p class="suave" style="margin-top: 20px">
+          El reciclaje está en nuestro nombre y en nuestra forma de trabajar. Separamos los residuos,
+          priorizamos productos de menor impacto y usamos agua y materiales de forma eficiente.
+        </p>
+        <p style="margin-top: 28px"><a class="enlace" href="#">Conoce nuestro enfoque →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nosotros -->
+  <section class="seccion" id="nosotros">
+    <div class="contenedor dos">
+      <div>
+        <h2>Una empresa hecha por gente que <strong>conoce el oficio</strong></h2>
+        <p class="cita" style="margin-top: 28px">
+          “Fundé ReciClean para que nuestros clientes reciban un servicio impecable y para que quienes
+          lo hacen posible trabajen con seguridad, respeto y orgullo.”
+        </p>
+        <p class="firma"><strong>Vivian Carlo</strong> · Fundadora</p>
+        <p style="margin-top: 32px"><a class="btn btn-borde" href="#">Sobre nosotros</a></p>
+      </div>
+      <img src="web/public/images/fundadora.webp" alt="Vivian Carlo, fundadora de ReciClean" style="aspect-ratio: 4 / 5; max-width: 420px; justify-self: end">
+    </div>
+  </section>
+
+  <!-- Banda -->
+  <section class="banda" aria-label="Trayectoria">
+    <img src="web/public/images/equipo-celebracion.webp" alt="">
+    <div class="contenedor">
+      <p class="grande">Desde 2020</p>
+      <p>cuidando espacios en La Paz y El Alto</p>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="seccion fondo-agua" id="contacto">
+    <div class="contenedor">
+      <div class="centrado">
+        <h2>¿Listo para <strong>cotizar</strong>?</h2>
+        <p class="suave" style="margin-top: 14px">Cuéntanos qué necesitas. Respondemos en menos de 24 horas.</p>
+      </div>
+      <form class="formulario" onsubmit="return false">
+        <div class="fila">
+          <label for="nombre">Nombre completo</label>
+          <input class="campo" id="nombre" name="nombre" autocomplete="name">
+        </div>
+        <div class="fila">
+          <label for="telefono">Teléfono</label>
+          <input class="campo" id="telefono" name="telefono" type="tel" autocomplete="tel">
+        </div>
+        <div class="fila">
+          <label for="servicio">Servicio</label>
+          <select class="campo" id="servicio" name="servicio">
+            <option>Limpieza institucional y empresarial</option>
+            <option>Limpieza post obra</option>
+            <option>Limpieza a domicilio</option>
+            <option>Limpieza flash</option>
+          </select>
+        </div>
+        <div class="fila arriba">
+          <label for="mensaje">Mensaje</label>
+          <textarea class="campo" id="mensaje" name="mensaje"></textarea>
+        </div>
+        <div class="enviar">
+          <button class="btn btn-principal" type="submit">Enviar por WhatsApp</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="columnas">
+      <div>
+        <h3>ReciClean</h3>
+        <p>Empresa de limpieza institucional, empresarial y a domicilio en La Paz y El Alto, Bolivia.</p>
+      </div>
+      <div>
+        <h3>Enlaces</h3>
+        <ul>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#sostenibilidad">Sostenibilidad</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contacto</h3>
+        <ul>
+          <li>WhatsApp: +591 76227202</li>
+          <li>reciclean2019@gmail.com</li>
+          <li><a href="https://www.facebook.com/ReciCleanBolivia">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal">© 2026 ReciClean</p>
+  </div>
+</footer>
+
+<a class="whatsapp" href="https://wa.me/59176227202" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1s-.5-.1-.7.2-.8 1-.9 1.100c-.2.2-.3.2-.6.1a8 8 0 0 1-2.400-1.500 9 9 0 0 1-1.600-2c-.2-.3 0-.5.1-.6l.4-.5.3-.5c.1-.2 0-.4 0-.5l-.9-2.200c-.2-.6-.5-.5-.7-.5h-.6a1.100 1.100 0 0 0-.8.4 3.400 3.400 0 0 0-1 2.500 5.900 5.900 0 0 0 1.200 3.100 13.500 13.500 0 0 0 5.200 4.600c.7.3 1.300.5 1.700.6a4.100 4.100 0 0 0 1.900.1 3.100 3.100 0 0 0 2-1.400 2.500 2.500 0 0 0 .2-1.400c-.1-.2-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.600 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm0 18.200a8.200 8.200 0 0 1-4.200-1.200l-.3-.2-3 .8.8-2.900-.2-.3A8.200 8.200 0 1 1 12 20.200z"/></svg>
+</a>
+
+<script>
+  // Carrusel mínimo: cambia solo cada 6,5 s y se detiene al pasar el cursor.
+  (function () {
+    var slides = document.querySelectorAll(".diapositiva");
+    var puntos = document.querySelectorAll(".puntos button");
+    var carrusel = document.querySelector(".carrusel");
+    var actual = 0, pausado = false;
+    var sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function ir(i) {
+      actual = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) { s.classList.toggle("activa", n === actual); });
+      puntos.forEach(function (p, n) { p.setAttribute("aria-selected", n === actual); });
+    }
+    puntos.forEach(function (p, n) { p.addEventListener("click", function () { ir(n); }); });
+    carrusel.addEventListener("mouseenter", function () { pausado = true; });
+    carrusel.addEventListener("mouseleave", function () { pausado = false; });
+    carrusel.addEventListener("focusin", function () { pausado = true; });
+    carrusel.addEventListener("focusout", function () { pausado = false; });
+    if (!sinMovimiento) setInterval(function () { if (!pausado) ir(actual + 1); }, 6500);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+{
+  "equipo": {
+    "src": "/images/equipo.webp",
+    "width": 1400,
+    "height": 856
+  },
+  "fundadora": {
+    "src": "/images/fundadora.webp",
+    "width": 900,
+    "height": 1125
+  },
+  "equipo-reconocimiento": {
+    "src": "/images/equipo-reconocimiento.webp",
+    "width": 1200,
+    "height": 1080
+  },
+  "equipo-celebracion": {
+    "src": "/images/equipo-celebracion.webp",
+    "width": 1400,
+    "height": 641
+  },
+  "oficinas": {
+    "src": "/images/oficinas.webp",
+    "width": 1400,
+    "height": 930
+  },
+  "oficina-moderna": {
+    "src": "/images/oficina-moderna.webp",
+    "width": 1200,
+    "height": 914
+  },
+  "aula": {
+    "src": "/images/aula.webp",
+    "width": 1200,
+    "height": 800
+  },
+  "piso": {
+    "src": "/images/piso.webp",
+    "width": 1400,
+    "height": 933
+  },
+  "carro-limpieza": {
+    "src": "/images/carro-limpieza.webp",
+    "width": 1200,
+    "height": 735
+  },
+  "post-obra": {
+    "src": "/images/post-obra.webp",
+    "width": 1000,
+    "height": 1499
+  },
+  "vidrios-exterior": {
+    "src": "/images/vidrios-exterior.webp",
+    "width": 1000,
+    "height": 1500
+  },
+  "alfombra": {
+    "src": "/images/alfombra.webp",
+    "width": 1200,
+    "height": 800
+  },
+  "cocina": {
+    "src": "/images/cocina.webp",
+    "width": 1000,
+    "height": 1500
+  },
+  "vidrios": {
+    "src": "/images/vidrios.webp",
+    "width": 1200,
+    "height": 800
+  },
+  "alfombra-vapor": {
+    "src": "/images/alfombra-vapor.webp",
+    "width": 1000,
+    "height": 1499
+  },
+  "superficies": {
+    "src": "/images/superficies.webp",
+    "width": 1200,
+    "height": 743
+  },
+  "hogar": {
+    "src": "/images/hogar.webp",
+    "width": 1200,
+    "height": 800
+  },
+  "logo": {
+    "src": "/images/logo.png",
+    "width": 174,
+    "height": 103
+  }
+}

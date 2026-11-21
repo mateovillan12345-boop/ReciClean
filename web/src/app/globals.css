@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+/* Paleta A (ver ReciClean_Colores_y_Tipografia.md) */
+@theme {
+  --color-morado: #6e257b;
+  --color-morado-oscuro: #561c61;
+  --color-turquesa: #0797b6;
+  --color-turquesa-oscuro: #056e86;
+  --color-agua: #eef8fb;
+  --color-lila: #f5eff7; /* morado suave para fondos (clase: bg-lila) */
+  --color-lila-borde: #dccbe1;
+  --color-verde: #1f8a4c; /* solo para el botón flotante de WhatsApp */
+  --color-verde-oscuro: #186e3c;
+  --color-linea: #e3e6ea;
+  --color-texto: #2b2330;
+  --color-texto-suave: #5d5563;
+
+  /* Redondeado moderado: rounded-sm = 4px, rounded = 6px */
+  --radius-sm: 4px;
+  --radius: 6px;
+
+  /* La negrita del sitio es seminegrita (600), para un tono más ligero */
+  --font-weight-bold: 600;
+}
+
+@theme inline {
+  --font-titulos: var(--font-principal), Arial, sans-serif;
+  --font-texto: var(--font-principal), Arial, sans-serif;
+  --font-logo: var(--font-fredoka), Arial, sans-serif; /* clase: font-logo */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-texto);
+  font-family: var(--font-texto);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  word-spacing: 0.08em;
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 1.0625rem;
+  }
+}
+
+/* En la capa base para que las utilidades de Tailwind (text-white, text-xl...) puedan sobrescribirlos. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-titulos);
+    color: var(--color-texto);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  /* Palabra clave del título en seminegrita, como en la referencia */
+  h1 strong,
+  h2 strong {
+    font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.75rem;
+    }
+    h2 {
+      font-size: 2.1rem;
+    }
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-turquesa);
+  outline-offset: 2px;
+}
+
+@layer components {
+  .contenedor {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .contenedor {
+      padding-inline: 2rem;
+    }
+  }
+
+  .seccion {
+    padding-block: 4.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .seccion {
+      padding-block: 6.5rem;
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.6rem 1.6rem;
+    border-radius: 100px;
+    border: 1.5px solid transparent;
+    font-family: var(--font-texto);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .btn-principal {
+    background: var(--color-morado);
+    color: #ffffff;
+  }
+  .btn-principal:hover {
+    background: var(--color-morado-oscuro);
+  }
+
+  /* Turquesa intenso (botones del header). #067d98 es el tono más vivo que mantiene contraste AA con texto blanco. */
+  .btn-turquesa {
+    background: #067d98;
+    color: #ffffff;
+    border-color: rgb(255 255 255 / 0.6); /* línea blanca delgada */
+  }
+  .btn-turquesa:hover {
+    background: var(--color-turquesa-oscuro);
+  }
+
+  .btn-borde {
+    border-color: var(--color-morado);
+    color: var(--color-morado);
+  }
+  .btn-borde:hover {
+    background: var(--color-morado);
+    color: #ffffff;
+  }
+
+  /* Para fondos morados o sobre fotos */
+  .btn-claro {
+    background: #ffffff;
+    color: var(--color-morado);
+  }
+  .btn-claro:hover {
+    background: var(--color-agua);
+  }
+
+  .btn-borde-claro {
+    border-color: rgb(255 255 255 / 0.8);
+    color: #ffffff;
+  }
+  .btn-borde-claro:hover {
+    background: #ffffff;
+    color: var(--color-morado);
+  }
+
+  /* Íconos de imagen que toman el color del texto (text-white, text-morado...).
+     El PNG solo aporta la forma; el color lo pone background-color. */
+  .icono-reciclaje,
+  .icono-check {
+    display: inline-block;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask: var(--mascara) center / contain no-repeat;
+    mask: var(--mascara) center / contain no-repeat;
+  }
+  .icono-reciclaje {
+    --mascara: url("/images/icono-reciclaje.png");
+  }
+  .icono-check {
+    --mascara: url("/images/icono-check.png");
+  }
+
+  .enlace {
+    color: var(--color-turquesa-oscuro);
+    font-weight: 500;
+  }
+  .enlace:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .campo {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #cfd6dc;
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--color-texto);
+    font: inherit;
+    font-size: 1rem;
+  }
+  .campo:focus {
+    outline: none;
+    border-color: var(--color-turquesa);
+    box-shadow: 0 0 0 3px rgb(7 151 182 / 0.18);
+  }
+  .campo[aria-invalid="true"] {
+    border-color: #b3261e;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+  }
+}
