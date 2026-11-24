@@ -141,22 +141,6 @@ export const valores = [
   },
 ] as const;
 
-export const trabajo = {
-  titulo: "Un trabajo digno empieza por cómo tratamos a nuestra gente",
-  texto: [
-    "En ReciClean creemos que el trabajo de limpieza merece respeto. Por eso todo nuestro equipo cuenta con seguro contra accidentes, capacitación constante y un trato justo.",
-    "Somos una empresa inclusiva: abrimos las puertas a madres jefas de hogar, jóvenes que buscan su primer empleo y personas que necesitan una nueva oportunidad.",
-  ],
-  ofrecemos: [
-    "Seguro contra accidentes",
-    "Pago justo y puntual",
-    "Capacitación en técnicas de limpieza, seguridad y cuidado ambiental",
-    "Equipos y elementos de protección personal",
-    "Horarios compatibles con la vida familiar",
-    "Ambiente de respeto e inclusión",
-  ],
-};
-
 export const sostenibilidad = {
   titulo: "Limpiamos tus espacios sin ensuciar el planeta",
   texto:
@@ -245,6 +229,7 @@ export const clientes = {
   texto:
     "Instituciones públicas y privadas, empresas y oficinas de La Paz y El Alto trabajan con nosotros de forma continua.",
   // Lo que ReciClean sostiene con cada cliente (texto de la empresa, no reseñas).
+  // `enlace` (opcional) muestra un enlace debajo del texto.
   compromisos: [
     {
       titulo: "Calidad que se mantiene",
@@ -255,6 +240,7 @@ export const clientes = {
       titulo: "Un equipo bien tratado",
       texto:
         "Todo nuestro personal trabaja con seguro contra accidentes, capacitación y un trato justo. Eso se nota en cada espacio que cuidamos.",
+      enlace: { href: "/empleos", texto: "Trabaja con nosotros" },
     },
   ],
   // PENDIENTE: nombres de clientes que autoricen aparecer. Ej.: ["Institución A", "Empresa B"]
@@ -262,3 +248,31 @@ export const clientes = {
   // PENDIENTE: reseñas reales de clientes. Se muestran solas en cuanto se agreguen aquí.
   testimonios: [] as { cita: string; nombre: string; cargo: string }[],
 };
+
+// Página /empleos: "¿Por qué trabajar en ReciClean?" (se muestra con <Garantias items={...} />).
+export const beneficiosTrabajo = [
+  {
+    titulo: "Personal asegurado",
+    texto: "Todo el equipo trabaja con seguro contra accidentes desde el primer día.",
+  },
+  {
+    titulo: "Un equipo bien tratado",
+    texto: "Trato justo, respeto e inclusión, con horarios compatibles con la vida familiar.",
+  },
+  {
+    titulo: "Capacitación",
+    texto: "Aprendes técnicas de limpieza, seguridad y cuidado ambiental, con equipo de protección.",
+  },
+  {
+    titulo: "Pago puntual",
+    texto: "Pago justo y siempre a tiempo, como acordamos al contratarte.",
+  },
+];
+
+// Página /empleos: "Postula en cuatro pasos" (se muestra con <Pasos lista={...} />).
+export const pasosPostulacion = [
+  { titulo: "Elige una vacante", texto: "Revisa los puestos abiertos o envíanos tu CV aunque no veas el tuyo." },
+  { titulo: "Envía tus datos", texto: "Completa el formulario y sube tu CV en PDF o foto. Toma 2 minutos." },
+  { titulo: "Te llamamos", texto: "Si tu perfil encaja, te contactamos por WhatsApp para una entrevista." },
+  { titulo: "Empiezas a trabajar", texto: "Firmas tu contrato, recibes capacitación y tu equipo de protección." },
+];

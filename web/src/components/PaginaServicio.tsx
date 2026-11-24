@@ -1,6 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { servicioPorSlug, servicios } from "@/content/servicios";
+import {
+  Briefcase,
+  Building2,
+  Clock,
+  GraduationCap,
+  HardHat,
+  HeartHandshake,
+  House,
+  Landmark,
+  Sparkles,
+  Store,
+  Timer,
+  Truck,
+  Users,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+import {
+  servicioPorSlug,
+  servicios,
+  type IconoIdealPara,
+  type Servicio,
+} from "@/content/servicios";
 import { mensajeCotizacion, mensajeVisitaTecnica } from "@/lib/site";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 import { Foto } from "./Foto";
@@ -48,8 +70,7 @@ export function PaginaServicio({ slug }: { slug: string }) {
         </Link>
       </CabeceraPagina>
 
-      {/* pb-0: la franja "Ideal para" cierra la sección y toca la sección celeste de abajo */}
-      <section className="seccion pb-0 md:pb-0">
+      <section className="seccion">
         <div className="contenedor grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
             <TituloSeccion etiqueta="Qué incluye" titulo={`¿Qué incluye la ${s.nombre.toLowerCase()}?`} />
@@ -76,45 +97,9 @@ export function PaginaServicio({ slug }: { slug: string }) {
             principal
           />
         </div>
-
-        {/* "Ideal para": franja morado suave de borde a borde, con las viñetas en 2 líneas */}
-        <div className="mt-16 bg-lila py-10 md:mt-20 md:py-14">
-          <div className="contenedor">
-            <h3 className="text-morado">Ideal para</h3>
-            <ul className="mt-5 grid gap-x-10 gap-y-3 text-base sm:grid-cols-2">
-              {s.idealPara.map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span aria-hidden="true" className="mt-[0.6rem] h-2 w-2 shrink-0 rounded-full bg-morado" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </section>
 
-      <section className="seccion bg-agua">
-        <div className="contenedor">
-          <TituloSeccion etiqueta="Áreas" titulo="Espacios que dejamos impecables" />
-          <ul
-            className={`mt-10 grid gap-6 sm:grid-cols-2 ${
-              s.galeria.length === 3 ? "lg:grid-cols-3" : ""
-            }`}
-          >
-            {s.galeria.map((g) => (
-              <li key={g.titulo}>
-                <Foto
-                  nombre={g.imagen}
-                  alt={g.alt}
-                  className="aspect-[3/2] w-full rounded object-cover"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                />
-                <p className="mt-4 font-bold">{g.titulo}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <SeccionResultados servicio={s} />
 
       <section className="seccion">
         <div className="contenedor">
@@ -155,5 +140,99 @@ export function PaginaServicio({ slug }: { slug: string }) {
         mensaje={mensaje}
       />
     </>
+  );
+}
+
+const iconosIdealPara: Record<IconoIdealPara, LucideIcon> = {
+  edificio: Landmark,
+  birrete: GraduationCap,
+  maletin: Briefcase,
+  tienda: Store,
+  casco: HardHat,
+  edificios: Building2,
+  casa: House,
+  familia: Users,
+  reloj: Clock,
+  cuidado: HeartHandshake,
+  mudanza: Truck,
+  brillo: Sparkles,
+  rayo: Zap,
+  cronometro: Timer,
+};
+
+/**
+ * Diseño nuevo que une "Ideal para" y "Espacios que dejamos impecables":
+ * titular centrado, galería de 3 fotos y una tarjeta blanca con los tipos de cliente.
+ * El morado es el acento; el turquesa queda solo para los botones.
+ */
+function SeccionResultados({ servicio }: { servicio: Servicio }) {
+  const items = servicio.idealParaIconos;
+  return (
+    <section aria-labelledby="titulo-resultados" className="bg-gris-claro py-16 md:py-[100px]">
+      <div className="contenedor">
+        <div className="text-text">
+          <p className="text-[1.0625rem] font-semibold text-morado">Pruebas de nuestro trabajo</p>
+          <h2
+            id="titulo-resultados"
+            className="mt-3 text-[2.25rem] leading-[1.15] md:text-[3.5rem]"
+          >
+            Resultados que se ven.
+            <span className="block text-morado">Espacios que hablan por nosotros.</span>
+          </h2>
+        </div>
+
+        {/* Galería: 1 columna en celular, 2 en tablet, 3 en escritorio */}
+        {/* Con 2 fotos (post obra, flash) quedan 2 columnas, sin un hueco a la derecha */}
+        <ul
+          className={`mt-14 grid gap-6 sm:grid-cols-2 ${
+            servicio.galeria.length === 3 ? "lg:grid-cols-3" : ""
+          }`}
+        >
+          {servicio.galeria.map((g) => (
+            <li key={g.titulo}>
+              <Foto
+                nombre={g.imagen}
+                alt={g.alt}
+                className="h-[300px] w-full rounded-[24px] object-cover"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              />
+              <p className="mt-[18px] flex items-start gap-2.5 text-[1.3125rem] font-semibold leading-snug">
+                {/* El punto queda a la altura de la primera línea aunque el nombre ocupe dos */}
+                <span aria-hidden="true" className="mt-[0.5em] h-2 w-2 shrink-0 rounded-full bg-morado" />
+                {g.titulo}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        {/* Tarjeta "Ideal para": en escritorio el título va a la izquierda; en tablet y celular, arriba */}
+        <div className="mt-10 grid gap-8 rounded-[28px] bg-white p-6 md:px-11 md:py-10 lg:grid-cols-[200px_1fr]">
+          <h3 className="text-[1.75rem] font-bold text-morado">Ideal para: </h3>
+          <ul
+            className={`grid gap-8 sm:grid-cols-2 ${
+              items.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"
+            }`}
+          >
+            {items.map((item) => {
+              const Icono = iconosIdealPara[item.icono];
+              return (
+                <li key={item.titulo}>
+                  <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-lila text-morado">
+                    <Icono aria-hidden="true" className="h-6 w-6" strokeWidth={1.6} />
+                  </span>
+                  {/* text-left: textos cortos en columna angosta, no se justifican */}
+                  <p className="mt-4 text-left text-[1.0625rem] leading-[1.45]">
+                    <span className="font-semibold text-texto">{item.titulo}</span>
+                    {item.detalle && (
+                      <span className="mt-1 block text-texto-suave">{item.detalle}</span>
+                    )}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </section>
   );
 }

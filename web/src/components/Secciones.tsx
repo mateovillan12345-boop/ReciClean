@@ -26,7 +26,8 @@ export function CabeceraPagina({
 }) {
   return (
     <section className="bg-agua">
-      <div className="contenedor py-14 md:py-20">
+      {/* entrada-rapida: título, texto y botones entran rápido al cargar (globals.css) */}
+      <div className="contenedor entrada-rapida py-28 md:py-40">
         <h1 className="max-w-3xl">{titulo}</h1>
         {texto && <p className="mt-5 max-w-2xl text-texto-suave">{texto}</p>}
         {children && <div className="mt-8 flex flex-wrap gap-3">{children}</div>}
@@ -110,16 +111,27 @@ export function TarjetaServicio({ servicio, alta }: { servicio: Servicio; alta?:
 
 const iconosPasos: LucideIcon[] = [MessageCircle, ClipboardList, FileText, BadgeCheck];
 
-/** Proceso en 4 pasos, unidos por una línea. */
-export function Pasos() {
+type Paso = { titulo: string; texto: string };
+
+/**
+ * Proceso en 4 pasos, unidos por una línea.
+ * Sin props muestra el proceso de contratación; `lista` e `iconos` lo reutilizan para otros procesos.
+ */
+export function Pasos({
+  lista = pasos,
+  iconos = iconosPasos,
+}: {
+  lista?: Paso[];
+  iconos?: LucideIcon[];
+} = {}) {
   return (
     <ol className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-      {pasos.map((paso, i) => {
-        const IconoPaso = iconosPasos[i] ?? BadgeCheck;
+      {lista.map((paso, i) => {
+        const IconoPaso = iconos[i] ?? BadgeCheck;
         return (
           <li key={paso.titulo} className="relative text-center">
             {/* Línea que une este paso con el siguiente (solo cuando están en una fila) */}
-            {i < pasos.length - 1 && (
+            {i < lista.length - 1 && (
               <span
                 aria-hidden="true"
                 className="absolute left-[calc(50%+2.5rem)] top-[26px] hidden h-0.5 w-[calc(100%-3rem)] bg-morado/25 lg:block"
@@ -145,13 +157,15 @@ export function Pasos() {
   );
 }
 
-export function Garantias() {
+/** Cuatro puntos de confianza en fila. Sin props muestra las garantías del servicio. */
+export function Garantias({ items = garantias }: { items?: { titulo: string; texto: string }[] } = {}) {
   return (
     <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-      {garantias.map((g) => (
+      {items.map((g) => (
         <li key={g.titulo}>
           <h3>{g.titulo}</h3>
-          <p className="mt-2 text-base text-texto-suave">{g.texto}</p>
+          {/* text-left: frase corta en columna angosta, no se justifica */}
+          <p className="mt-2 text-left text-base text-texto-suave">{g.texto}</p>
         </li>
       ))}
     </ul>
@@ -215,10 +229,13 @@ export function BandaContacto({
   titulo = "¿Listo para cotizar tu servicio?",
   texto = "Cuéntanos qué necesitas y te enviamos una cotización sin compromiso. Respondemos en menos de 24 horas.",
   mensaje,
+  acciones,
 }: {
   titulo?: string;
   texto?: string;
   mensaje?: string;
+  /** Botones propios en lugar de "WhatsApp + Ir al formulario". */
+  acciones?: React.ReactNode;
 }) {
   return (
     <section className="bg-morado text-white">
@@ -228,10 +245,14 @@ export function BandaContacto({
           <p className="mt-3 text-white/90">{texto}</p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-3">
-          <BotonWhatsApp mensaje={mensaje} />
-          <Link href="/contacto" className="btn btn-borde-claro">
-            Ir al formulario
-          </Link>
+          {acciones ?? (
+            <>
+              <BotonWhatsApp mensaje={mensaje} />
+              <Link href="/contacto" className="btn btn-borde-claro">
+                Ir al formulario
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </section>

@@ -9,6 +9,7 @@
   --color-agua: #eef8fb;
   --color-lila: #f5eff7; /* morado suave para fondos (clase: bg-lila) */
   --color-lila-borde: #dccbe1;
+  --color-gris-claro: #f5f5f7; /* gris neutro para fondos de sección (clase: bg-gris-claro) */
   --color-verde: #1f8a4c; /* solo para el botón flotante de WhatsApp */
   --color-verde-oscuro: #186e3c;
   --color-linea: #e3e6ea;
@@ -31,6 +32,11 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Con una ventana (dialog) abierta, la página de fondo no se desplaza. */
+html:has(dialog[open]) {
+  overflow: hidden;
 }
 
 body {
@@ -74,6 +80,16 @@ body {
     font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.35;
+  }
+
+  /* Párrafos justificados en las páginas públicas (#contenido es el <main> del sitio).
+     La última línea no se estira, así que los párrafos de una línea se ven igual.
+     hyphens: corta palabras largas con guion (en español, por lang="es") para evitar huecos.
+     No se aplica dentro de bloques centrados (text-center), como los pasos.
+     Para excluir uno: clase text-left (o text-center), que gana sobre esta regla. */
+  #contenido p:not(:where(.text-center, .text-center *)) {
+    text-align: justify;
+    hyphens: auto;
   }
 
   /* Palabra clave del título en seminegrita, como en la referencia */
@@ -234,7 +250,81 @@ body {
   }
 }
 
+/* ------------------------------------------------------------------
+   Animaciones al hacer scroll (components/AnimacionesScroll.tsx)
+   Solo actúan cuando ese componente pone la clase .animaciones en <html>.
+   Para cambiar el efecto: la distancia (28px), la duración (0.8s) o la curva.
+   ------------------------------------------------------------------ */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes aparecer-foto {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* Aún no visto: oculto y un poco más abajo */
+html.animaciones [data-aparecer]:not([data-visible], [data-aparecido]) {
+  opacity: 0;
+  translate: 0 28px;
+}
+html.animaciones [data-aparecer="foto"]:not([data-visible], [data-aparecido]) {
+  translate: none;
+  scale: 0.96;
+}
+
+/* Entró en pantalla: se anima una vez (--retraso crea la cascada de los grupos) */
+html.animaciones [data-aparecer][data-visible] {
+  animation: aparecer 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--retraso, 0ms) both;
+}
+html.animaciones [data-aparecer="foto"][data-visible] {
+  animation-name: aparecer-foto;
+  animation-duration: 1.1s;
+}
+
+/* Entrada rápida del hero (texto del carrusel y cabecera de cada página): sus hijos directos
+   entran en 0.6s, en cascada cada 0.1s. No necesita JavaScript: corre al cargar la página.
+   En el carrusel se vuelve a poner en cada diapositiva, por eso se repite al cambiar. */
+.entrada-rapida > * {
+  animation: aparecer 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.entrada-rapida > :nth-child(2) {
+  animation-delay: 0.1s;
+}
+.entrada-rapida > :nth-child(3) {
+  animation-delay: 0.2s;
+}
+.entrada-rapida > :nth-child(4) {
+  animation-delay: 0.3s;
+}
+.entrada-rapida > :nth-child(n + 5) {
+  animation-delay: 0.4s;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .entrada-rapida > * {
+    animation: none;
+  }
+  html.animaciones [data-aparecer] {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    animation: none !important;
+  }
   html {
     scroll-behavior: auto;
   }

@@ -74,7 +74,7 @@ export function Carrusel() {
       onFocusCapture={() => setPausado(true)}
       onBlurCapture={() => setPausado(false)}
     >
-      <div className="relative min-h-[520px] md:min-h-[560px]">
+      <div className="relative min-h-[97svh]">
         {diapositivas.map((d, i) => {
           const visible = i === activa;
           const Titulo = i === 0 ? "h1" : "h2";
@@ -99,8 +99,9 @@ export function Carrusel() {
               />
               {/* Velo plano (sin degradado) para que el texto se lea sobre la foto */}
               <div className="absolute inset-0 bg-[#34133c]/65" />
-              <div className="contenedor relative flex min-h-[520px] items-center pb-16 pt-10 md:min-h-[560px]">
-                <div className="max-w-3xl text-white">
+              <div className="contenedor relative flex min-h-svh items-center pb-16 pt-10">
+                {/* entrada-rapida: el texto entra rápido en cascada cada vez que la diapositiva aparece (globals.css) */}
+                <div className={`max-w-3xl text-white ${visible ? "entrada-rapida" : ""}`}>
                   <Titulo className="text-[2.1rem] font-small leading-tight text-white md:text-[3.25rem]">
                     {d.titulo}
                   </Titulo>
