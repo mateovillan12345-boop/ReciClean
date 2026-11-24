@@ -1,4 +1,4 @@
-# Archivos que NO se suben a GitHub (siguen en tu computadora).
+# Archivos que no se suben a GitHub (siguen en tu computadora).
 # Las reglas de la app (node_modules, .next, .env.local...) están en web/.gitignore.
 
 # Instrucciones y configuración local de Claude Code
