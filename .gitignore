@@ -1,0 +1,20 @@
+# Archivos que NO se suben a GitHub (siguen en tu computadora).
+# Las reglas de la app (node_modules, .next, .env.local...) están en web/.gitignore.
+
+# Instrucciones y configuración local de Claude Code
+CLAUDE.md
+.claude/
+
+# Fotos originales (47 MB, incluyen fotos del personal). El sitio usa las versiones
+# optimizadas de web/public/images, que sí se suben. Se regeneran con scripts/build-images.mjs.
+Images/
+
+# Documentos internos de planificación y previews de paletas (no forman parte del sitio)
+/ReciClean*.md
+/paletas-preview.html
+/preview-minimalista.html
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Encabezado } from "@/components/Encabezado";
-import { PiePagina } from "@/components/PiePagina";
-import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -59,25 +56,12 @@ export const metadata: Metadata = {
   icons: { icon: "/images/logo.png" },
 };
 
-const negocioLocal = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: site.nombre,
-  description: site.descripcion,
-  url: site.url,
-  image: `${site.url}/images/equipo.webp`,
-  telephone: "+59176227202",
-  email: site.correo,
-  sameAs: [site.facebook],
-  foundingDate: "2020",
-  founder: { "@type": "Person", name: "Vivian Carlo" },
-  areaServed: [
-    { "@type": "City", name: "La Paz" },
-    { "@type": "City", name: "El Alto" },
-  ],
-  address: { "@type": "PostalAddress", addressLocality: "La Paz", addressCountry: "BO" },
-};
-
+/**
+ * Layout raíz: solo <html>, fuentes y estilos. Lo comparten el sitio público y el panel.
+ * - Sitio público (header, footer, WhatsApp): app/(sitio)/layout.tsx
+ * - Panel privado: app/(admin)/layout.tsx
+ * Cada uno debe tener un <main id="contenido"> para el enlace "Saltar al contenido".
+ */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -91,16 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Saltar al contenido
         </a>
-        <Encabezado />
-        <main id="contenido" className="flex-1">
-          {children}
-        </main>
-        <PiePagina />
-        <WhatsAppFlotante />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(negocioLocal) }}
-        />
+        {children}
       </body>
     </html>
   );

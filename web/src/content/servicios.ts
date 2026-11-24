@@ -1,5 +1,22 @@
 import type { NombreImagen } from "./imagenes";
 
+/** Íconos disponibles para "Ideal para" (se dibujan en components/PaginaServicio.tsx). */
+export type IconoIdealPara =
+  | "edificio" // edificio con columnas
+  | "birrete"
+  | "maletin"
+  | "tienda"
+  | "casco" // casco de obra
+  | "edificios"
+  | "casa"
+  | "familia"
+  | "reloj"
+  | "cuidado" // manos con corazón
+  | "mudanza" // camión
+  | "brillo"
+  | "rayo"
+  | "cronometro";
+
 export type Servicio = {
   slug: string;
   numero: string;
@@ -12,7 +29,10 @@ export type Servicio = {
   altImagen: string;
   destacado?: boolean;
   incluye: { titulo: string; detalle?: string }[];
+  /** Versión en texto de "Ideal para" (ya no se muestra en la página; queda como referencia). */
   idealPara: string[];
+  /** "Ideal para" con ícono: se muestra en la sección "Resultados que se ven" del detalle. */
+  idealParaIconos: { titulo: string; detalle?: string; icono: IconoIdealPara }[];
   /** Máximo 3 preguntas frecuentes relevantes (claves de `preguntas` en content/empresa.ts). */
   preguntas: string[];
   galeria: { imagen: NombreImagen; alt: string; titulo: string }[];
@@ -66,6 +86,20 @@ export const servicios: Servicio[] = [
       "Oficinas corporativas",
       "Comercios y edificios",
     ],
+    idealParaIconos: [
+      {
+        icono: "edificio",
+        titulo: "Instituciones públicas.",
+        detalle: "",
+      },
+      {
+        icono: "birrete",
+        titulo: "Instituciones privadas.",
+        detalle: "",
+      },
+      { icono: "maletin", titulo: "Oficinas corporativas." },
+      { icono: "tienda", titulo: "Comercios y edificios." },
+    ],
     galeria: [
       {
         imagen: "oficina-moderna",
@@ -108,6 +142,12 @@ export const servicios: Servicio[] = [
       "Oficinas nuevas",
       "Viviendas remodeladas",
     ],
+    idealParaIconos: [
+      { icono: "casco", titulo: "Constructoras." },
+      { icono: "edificios", titulo: "Inmobiliarias." },
+      { icono: "maletin", titulo: "Oficinas nuevas." },
+      { icono: "casa", titulo: "Viviendas remodeladas." },
+    ],
     galeria: [
       {
         imagen: "vidrios-exterior",
@@ -147,6 +187,12 @@ export const servicios: Servicio[] = [
       "Personas que trabajan todo el día",
       "Adultos mayores",
       "Quienes se mudan o terminan una remodelación",
+    ],
+    idealParaIconos: [
+      { icono: "familia", titulo: "Familias." },
+      { icono: "reloj", titulo: "Personas que trabajan todo el día." },
+      { icono: "cuidado", titulo: "Adultos mayores." },
+      { icono: "mudanza", titulo: "Quienes se mudan o terminan una remodelación." },
     ],
     galeria: [
       {
@@ -189,6 +235,11 @@ export const servicios: Servicio[] = [
       "Mantenimiento general del hogar",
       "Quienes necesitan una ayuda puntual",
       "Personas con poco tiempo",
+    ],
+    idealParaIconos: [
+      { icono: "brillo", titulo: "Mantenimiento general del hogar." },
+      { icono: "rayo", titulo: "Quienes necesitan una ayuda puntual." },
+      { icono: "cronometro", titulo: "Personas con poco tiempo." },
     ],
     galeria: [
       {

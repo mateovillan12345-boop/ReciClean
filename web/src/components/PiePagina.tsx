@@ -20,7 +20,7 @@ export function PiePagina() {
             {menu.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className={enlace}>
-                  {item.texto}
+                  {item.textoPie ?? item.texto}
                 </Link>
               </li>
             ))}

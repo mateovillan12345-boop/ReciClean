@@ -16,24 +16,15 @@ export const site = {
   respuesta: "Respondemos en menos de 24 horas",
 } as const;
 
-// Funciones que se pueden ocultar sin borrar su código.
-export const funciones = {
-  // Página y sección "Trabaja con nosotros": oculta por ahora. Poner en true para reactivarla.
-  trabajaConNosotros: false,
-};
-
-const menuCompleto = [
+export const menu: { href: string; texto: string; textoPie?: string }[] = [
   { href: "/", texto: "Inicio" },
   { href: "/servicios", texto: "Servicios" },
   { href: "/sostenibilidad", texto: "Sostenibilidad" },
   { href: "/nosotros", texto: "Nosotros" },
-  { href: "/trabaja-con-nosotros", texto: "Trabaja con nosotros" },
+  // textoPie: en el pie de página este enlace se muestra con otro texto.
+  { href: "/empleos", texto: "Empleos", textoPie: "Trabaja con nosotros" },
   { href: "/contacto", texto: "Contacto" },
 ];
-
-export const menu = menuCompleto.filter(
-  (item) => item.href !== "/trabaja-con-nosotros" || funciones.trabajaConNosotros,
-);
 
 /** Arma el enlace wa.me con un mensaje prellenado. */
 export function enlaceWhatsApp(mensaje: string): string {
